@@ -59,29 +59,50 @@ jobs:
             gh release download --repo "$repo" --pattern '*.deb' --dir debs --clobber \
               || echo "::warning::No release with .deb assets in $repo (skipped)"
           done
-          # Some repos attach one .deb per Debian release (e.g. *_trixie.deb and
-          # *_bookworm.deb) with the same package version; this repository is
-          # trixie only, and reprepro rejects a second file for the same version.
-          rm -fv debs/*_bookworm.deb
-          ls -l debs
-          compgen -G 'debs/*.deb' > /dev/null || { echo "::error::No .deb files found"; exit 1; }
+          # Sort the files by Debian release. A build for bookworm is marked in its
+          # file name (version "~bookworm" or suffix "_bookworm.deb"); every other
+          # file, marked "trixie" or not marked at all, is a trixie build.
+          mkdir -p debs/trixie debs/bookworm
+          for f in debs/*.deb; do
+            [ -e "$f" ] || continue
+            case "$(basename "$f")" in
+              *bookworm*) mv "$f" debs/bookworm/ ;;
+              *)          mv "$f" debs/trixie/ ;;
+            esac
+          done
+          ls -lR debs
+          compgen -G 'debs/trixie/*.deb' > /dev/null || { echo "::error::No .deb files found for trixie"; exit 1; }
+          compgen -G 'debs/bookworm/*.deb' > /dev/null || echo "::warning::No .deb files found for bookworm"
 
       - name: Build and sign the repository
         run: |
-          mkdir -p public
-          reprepro -b . --outdir public includedeb trixie debs/*.deb
-          reprepro -b . --outdir public export trixie
+          # Each suite gets its own reprepro database and pool: a source repo may
+          # attach builds for trixie and bookworm with the same version but
+          # different contents, which cannot share one pool. trixie stays at the
+          # site root (as before); bookworm is published under /bookworm.
+          for dist in trixie bookworm; do
+            if [ "$dist" = trixie ]; then out=public; else out="public/$dist"; fi
+            mkdir -p "$out"
+            rr=(reprepro -b . --dbdir "$PWD/db/$dist" --outdir "$PWD/$out")
+            if compgen -G "debs/$dist/*.deb" > /dev/null; then
+              "${rr[@]}" includedeb "$dist" debs/"$dist"/*.deb
+            fi
+            # Export even when empty, so apt update works for every suite.
+            "${rr[@]}" export "$dist"
+          done
           gpg --armor --export > public/tde-apt.asc
           cp site/index.html public/index.html
           touch public/.nojekyll
           # Do not publish reprepro's own bookkeeping.
           rm -rf public/db
-          find public -maxdepth 4 | sort
+          find public -maxdepth 5 | sort
 
       - name: Verify the signature before publishing
         run: |
-          gpg --verify public/dists/trixie/InRelease
-          gpg --verify public/dists/trixie/Release.gpg public/dists/trixie/Release
+          for d in public/dists/trixie public/bookworm/dists/bookworm; do
+            gpg --verify "$d/InRelease"
+            gpg --verify "$d/Release.gpg" "$d/Release"
+          done
 
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
