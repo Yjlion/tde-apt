@@ -2,12 +2,22 @@
 
 A signed apt repository for extra Trinity Desktop Environment packages on Debian 13 (trixie, amd64), published with GitHub Pages.
 
-| Package source | Notes |
-|---|---|
-| [tde-systemd](https://github.com/Yjlion/tde-systemd) | systemd manager and journal viewer |
-| [tde-flatpak](https://github.com/Yjlion/tde-flatpak) | Flatpak manager |
-| [tde-packagekit](https://github.com/Yjlion/tde-packagekit) | PackageKit software manager |
-| [tde-refresh](https://github.com/Yjlion/tde-refresh) | look-and-feel metapackages |
+## Packages
+
+All packages follow the `tde-<name>-trinity` naming scheme.
+
+| Package | Source | Description |
+|---|---|---|
+| `tde-systemd-trinity` | [tde-systemd](https://github.com/Yjlion/tde-systemd) | systemd manager and journal viewer |
+| `tde-flatpak-trinity` | [tde-flatpak](https://github.com/Yjlion/tde-flatpak) | Flatpak manager |
+| `tde-packagekit-trinity` | [tde-packagekit](https://github.com/Yjlion/tde-packagekit) | PackageKit software manager |
+| `tde-refresh-trinity` | [tde-refresh](https://github.com/Yjlion/tde-refresh) | Full Trinity Desktop Environment, curated (metapackage) |
+| `tde-refresh-desktop-base-trinity` | [tde-refresh](https://github.com/Yjlion/tde-refresh) | Ceratopsian theme |
+| `tde-refresh-win9x-trinity` | [tde-refresh](https://github.com/Yjlion/tde-refresh) | Windows 9x look |
+| `tde-refresh-macclassic-trinity` | [tde-refresh](https://github.com/Yjlion/tde-refresh) | Mac OS Classic look |
+| `tde-refresh-macosx-trinity` | [tde-refresh](https://github.com/Yjlion/tde-refresh) | Mac OS X look |
+
+Renamed in November 2026: `tde-systemd` → `tde-systemd-trinity`, `tdeflatpak` → `tde-flatpak-trinity`, `tdepackagekit-trinity` → `tde-packagekit-trinity`. Installing the new package removes the old one.
 
 ## Use it
 

@@ -7,6 +7,8 @@
 <style>
   body { font: 16px/1.5 system-ui, sans-serif; max-width: 46rem; margin: 2rem auto; padding: 0 1rem; }
   pre { background: #f2f2f2; padding: .75rem; overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; }
+  th, td { text-align: left; padding: .3rem .6rem; border-bottom: 1px solid #8884; }
   @media (prefers-color-scheme: dark) { body { background: #161616; color: #ddd; } pre { background: #262626; } }
 </style>
 </head>
@@ -23,7 +25,20 @@ echo "deb [signed-by=/etc/apt/keyrings/yjlion-tde.asc] https://yjlion.github.io/
 sudo apt update</pre>
 
 <h2>Packages</h2>
-<p>See <a href="dists/trixie/main/binary-amd64/Packages">the package index</a>, or run <code>apt-cache policy</code> after adding the repository.</p>
+<table>
+<thead><tr><th>Package</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td><code>tde-systemd-trinity</code></td><td>systemd manager and journal viewer</td></tr>
+<tr><td><code>tde-flatpak-trinity</code></td><td>Flatpak manager</td></tr>
+<tr><td><code>tde-packagekit-trinity</code></td><td>PackageKit software manager</td></tr>
+<tr><td><code>tde-refresh-trinity</code></td><td>Full Trinity Desktop Environment, curated (metapackage)</td></tr>
+<tr><td><code>tde-refresh-desktop-base-trinity</code></td><td>Ceratopsian theme</td></tr>
+<tr><td><code>tde-refresh-win9x-trinity</code></td><td>Windows 9x look</td></tr>
+<tr><td><code>tde-refresh-macclassic-trinity</code></td><td>Mac OS Classic look</td></tr>
+<tr><td><code>tde-refresh-macosx-trinity</code></td><td>Mac OS X look</td></tr>
+</tbody>
+</table>
+<p>Install with <code>sudo apt install &lt;package&gt;</code>. The full list is in <a href="dists/trixie/main/binary-amd64/Packages">the package index</a>.</p>
 <p>Source: <a href="https://github.com/Yjlion/tde-apt">github.com/Yjlion/tde-apt</a></p>
 </body>
 </html>
