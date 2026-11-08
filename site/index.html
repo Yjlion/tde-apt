@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yjlion TDE apt repository</title>
+<style>
+  body { font: 16px/1.5 system-ui, sans-serif; max-width: 46rem; margin: 2rem auto; padding: 0 1rem; }
+  pre { background: #f2f2f2; padding: .75rem; overflow-x: auto; }
+  @media (prefers-color-scheme: dark) { body { background: #161616; color: #ddd; } pre { background: #262626; } }
+</style>
+</head>
+<body>
+<h1>Yjlion TDE apt repository</h1>
+<p>Extra packages for the Trinity Desktop Environment (R14.1) on Debian 13 (trixie), amd64.
+You also need the official <a href="https://wiki.trinitydesktop.org/">Trinity</a> repository configured.</p>
+
+<h2>Add the repository</h2>
+<pre>sudo install -d -m 0755 /etc/apt/keyrings
+sudo curl -fsSL https://yjlion.github.io/tde-apt/tde-apt.asc -o /etc/apt/keyrings/yjlion-tde.asc
+echo "deb [signed-by=/etc/apt/keyrings/yjlion-tde.asc] https://yjlion.github.io/tde-apt trixie main" \
+  | sudo tee /etc/apt/sources.list.d/yjlion-tde.list
+sudo apt update</pre>
+
+<h2>Packages</h2>
+<p>See <a href="dists/trixie/main/binary-amd64/Packages">the package index</a>, or run <code>apt-cache policy</code> after adding the repository.</p>
+<p>Source: <a href="https://github.com/Yjlion/tde-apt">github.com/Yjlion/tde-apt</a></p>
+</body>
+</html>

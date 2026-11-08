@@ -1,0 +1,87 @@
+name: Publish apt repository
+
+on:
+  workflow_dispatch:
+  # Optional: app repos can trigger this after attaching a .deb to a release:
+  #   gh api repos/Yjlion/tde-apt/dispatches -f event_type=new-deb
+  repository_dispatch:
+    types: [new-deb]
+  # Fallback so new releases get picked up without any cross-repo token.
+  schedule:
+    - cron: "17 4 * * *"
+  push:
+    branches: [main]
+    paths: [conf/**, site/**, .github/workflows/publish.yml]
+
+# Only one publish at a time; never cancel a deploy half way.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+env:
+  # Repos whose latest GitHub release carries the .deb files.
+  SOURCE_REPOS: "Yjlion/tde-systemd Yjlion/tde-flatpak Yjlion/tde-packagekit Yjlion/tde-refresh"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y reprepro gnupg
+
+      - name: Import signing key
+        env:
+          APT_GPG_KEY: ${{ secrets.APT_GPG_KEY }}
+        run: |
+          test -n "$APT_GPG_KEY" || { echo "::error::Secret APT_GPG_KEY is not set"; exit 1; }
+          printf '%s\n' "$APT_GPG_KEY" | gpg --batch --import
+          # The key must have no passphrase (see README); reprepro signs non-interactively.
+          gpg --list-secret-keys --keyid-format long
+
+      - name: Download .debs from the latest release of each repo
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p debs
+          for repo in $SOURCE_REPOS; do
+            echo "== $repo"
+            gh release download --repo "$repo" --pattern '*.deb' --dir debs --clobber \
+              || echo "::warning::No release with .deb assets in $repo (skipped)"
+          done
+          ls -l debs
+          compgen -G 'debs/*.deb' > /dev/null || { echo "::error::No .deb files found"; exit 1; }
+
+      - name: Build and sign the repository
+        run: |
+          mkdir -p public
+          reprepro -b . --outdir public includedeb trixie debs/*.deb
+          reprepro -b . --outdir public export trixie
+          gpg --armor --export > public/tde-apt.asc
+          cp site/index.html public/index.html
+          touch public/.nojekyll
+          # Do not publish reprepro's own bookkeeping.
+          rm -rf public/db
+          find public -maxdepth 4 | sort
+
+      - name: Verify the signature before publishing
+        run: |
+          gpg --verify public/dists/trixie/InRelease
+          gpg --verify public/dists/trixie/Release.gpg public/dists/trixie/Release
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+      - id: deploy
+        uses: actions/deploy-pages@v4
