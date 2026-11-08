@@ -11,6 +11,7 @@ All packages follow the `tde-<name>-trinity` naming scheme, except `tde-youtube`
 | `tde-systemd-trinity` | [tde-systemd](https://github.com/Yjlion/tde-systemd) | systemd manager and journal viewer | trixie, bookworm |
 | `tde-flatpak-trinity` | [tde-flatpak](https://github.com/Yjlion/tde-flatpak) | Flatpak manager | trixie |
 | `tde-packagekit-trinity` | [tde-packagekit](https://github.com/Yjlion/tde-packagekit) | PackageKit software manager | trixie |
+| `tde-firewalld-trinity` | [tde-firewalld](https://github.com/Yjlion/tde-firewalld) | firewalld manager (Security & Privacy → Firewall) | trixie, bookworm |
 | `tde-refresh-trinity` | [tde-refresh](https://github.com/Yjlion/tde-refresh) | Full Trinity Desktop Environment, curated (metapackage) | trixie |
 | `tde-refresh-desktop-base-trinity` | [tde-refresh](https://github.com/Yjlion/tde-refresh) | Ceratopsian theme | trixie |
 | `tde-refresh-win9x-trinity` | [tde-refresh](https://github.com/Yjlion/tde-refresh) | Windows 9x look | trixie |
