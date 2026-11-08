@@ -14,32 +14,38 @@
 </head>
 <body>
 <h1>Yjlion TDE apt repository</h1>
-<p>Extra packages for the Trinity Desktop Environment (R14.1) on Debian 13 (trixie), amd64.
-You also need the official <a href="https://wiki.trinitydesktop.org/">Trinity</a> repository configured.</p>
+<p>Extra packages for the Trinity Desktop Environment (R14.1) on Debian 13 (trixie) and Debian 12 (bookworm), amd64.
+You also need the official <a href="https://wiki.trinitydesktop.org/">Trinity</a> repository configured for the same Debian release.</p>
 
 <h2>Add the repository</h2>
+<p>Add the signing key:</p>
 <pre>sudo install -d -m 0755 /etc/apt/keyrings
-sudo curl -fsSL https://yjlion.github.io/tde-apt/tde-apt.asc -o /etc/apt/keyrings/yjlion-tde.asc
-echo "deb [signed-by=/etc/apt/keyrings/yjlion-tde.asc] https://yjlion.github.io/tde-apt trixie main" \
+sudo curl -fsSL https://yjlion.github.io/tde-apt/tde-apt.asc -o /etc/apt/keyrings/yjlion-tde.asc</pre>
+<p>Debian 13 (trixie):</p>
+<pre>echo "deb [signed-by=/etc/apt/keyrings/yjlion-tde.asc] https://yjlion.github.io/tde-apt trixie main" \
+  | sudo tee /etc/apt/sources.list.d/yjlion-tde.list
+sudo apt update</pre>
+<p>Debian 12 (bookworm):</p>
+<pre>echo "deb [signed-by=/etc/apt/keyrings/yjlion-tde.asc] https://yjlion.github.io/tde-apt/bookworm bookworm main" \
   | sudo tee /etc/apt/sources.list.d/yjlion-tde.list
 sudo apt update</pre>
 
 <h2>Packages</h2>
 <table>
-<thead><tr><th>Package</th><th>Description</th></tr></thead>
+<thead><tr><th>Package</th><th>Description</th><th>Debian</th></tr></thead>
 <tbody>
-<tr><td><code>tde-systemd-trinity</code></td><td>systemd manager and journal viewer</td></tr>
-<tr><td><code>tde-flatpak-trinity</code></td><td>Flatpak manager</td></tr>
-<tr><td><code>tde-packagekit-trinity</code></td><td>PackageKit software manager</td></tr>
-<tr><td><code>tde-refresh-trinity</code></td><td>Full Trinity Desktop Environment, curated (metapackage)</td></tr>
-<tr><td><code>tde-refresh-desktop-base-trinity</code></td><td>Ceratopsian theme</td></tr>
-<tr><td><code>tde-refresh-win9x-trinity</code></td><td>Windows 9x look</td></tr>
-<tr><td><code>tde-refresh-macclassic-trinity</code></td><td>Mac OS Classic look</td></tr>
-<tr><td><code>tde-refresh-macosx-trinity</code></td><td>Mac OS X look</td></tr>
-<tr><td><code>tde-youtube</code></td><td>YouTube browser and player</td></tr>
+<tr><td><code>tde-systemd-trinity</code></td><td>systemd manager and journal viewer</td><td>trixie, bookworm</td></tr>
+<tr><td><code>tde-flatpak-trinity</code></td><td>Flatpak manager</td><td>trixie</td></tr>
+<tr><td><code>tde-packagekit-trinity</code></td><td>PackageKit software manager</td><td>trixie</td></tr>
+<tr><td><code>tde-refresh-trinity</code></td><td>Full Trinity Desktop Environment, curated (metapackage)</td><td>trixie</td></tr>
+<tr><td><code>tde-refresh-desktop-base-trinity</code></td><td>Ceratopsian theme</td><td>trixie</td></tr>
+<tr><td><code>tde-refresh-win9x-trinity</code></td><td>Windows 9x look</td><td>trixie</td></tr>
+<tr><td><code>tde-refresh-macclassic-trinity</code></td><td>Mac OS Classic look</td><td>trixie</td></tr>
+<tr><td><code>tde-refresh-macosx-trinity</code></td><td>Mac OS X look</td><td>trixie</td></tr>
+<tr><td><code>tde-youtube</code></td><td>YouTube browser and player</td><td>trixie, bookworm</td></tr>
 </tbody>
 </table>
-<p>Install with <code>sudo apt install &lt;package&gt;</code>. The full list is in <a href="dists/trixie/main/binary-amd64/Packages">the package index</a>.</p>
+<p>Install with <code>sudo apt install &lt;package&gt;</code>. The full lists are in the package indexes for <a href="dists/trixie/main/binary-amd64/Packages">trixie</a> and <a href="bookworm/dists/bookworm/main/binary-amd64/Packages">bookworm</a>.</p>
 <p>Source: <a href="https://github.com/Yjlion/tde-apt">github.com/Yjlion/tde-apt</a></p>
 </body>
 </html>

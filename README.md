@@ -1,44 +1,64 @@
 # tde-apt
 
-A signed apt repository for extra Trinity Desktop Environment packages on Debian 13 (trixie, amd64), published with GitHub Pages.
+A signed apt repository for extra Trinity Desktop Environment packages on Debian 13 (trixie) and Debian 12 (bookworm), amd64, published with GitHub Pages.
 
 ## Packages
 
 All packages follow the `tde-<name>-trinity` naming scheme, except `tde-youtube`, which keeps its upstream package name.
 
-| Package | Source | Description |
-|---|---|---|
-| `tde-systemd-trinity` | [tde-systemd](https://github.com/Yjlion/tde-systemd) | systemd manager and journal viewer |
-| `tde-flatpak-trinity` | [tde-flatpak](https://github.com/Yjlion/tde-flatpak) | Flatpak manager |
-| `tde-packagekit-trinity` | [tde-packagekit](https://github.com/Yjlion/tde-packagekit) | PackageKit software manager |
-| `tde-refresh-trinity` | [tde-refresh](https://github.com/Yjlion/tde-refresh) | Full Trinity Desktop Environment, curated (metapackage) |
-| `tde-refresh-desktop-base-trinity` | [tde-refresh](https://github.com/Yjlion/tde-refresh) | Ceratopsian theme |
-| `tde-refresh-win9x-trinity` | [tde-refresh](https://github.com/Yjlion/tde-refresh) | Windows 9x look |
-| `tde-refresh-macclassic-trinity` | [tde-refresh](https://github.com/Yjlion/tde-refresh) | Mac OS Classic look |
-| `tde-refresh-macosx-trinity` | [tde-refresh](https://github.com/Yjlion/tde-refresh) | Mac OS X look |
-| `tde-youtube` | [tde-youtube](https://github.com/Yjlion/tde-youtube) | YouTube browser and player |
+| Package | Source | Description | Debian |
+|---|---|---|---|
+| `tde-systemd-trinity` | [tde-systemd](https://github.com/Yjlion/tde-systemd) | systemd manager and journal viewer | trixie, bookworm |
+| `tde-flatpak-trinity` | [tde-flatpak](https://github.com/Yjlion/tde-flatpak) | Flatpak manager | trixie |
+| `tde-packagekit-trinity` | [tde-packagekit](https://github.com/Yjlion/tde-packagekit) | PackageKit software manager | trixie |
+| `tde-refresh-trinity` | [tde-refresh](https://github.com/Yjlion/tde-refresh) | Full Trinity Desktop Environment, curated (metapackage) | trixie |
+| `tde-refresh-desktop-base-trinity` | [tde-refresh](https://github.com/Yjlion/tde-refresh) | Ceratopsian theme | trixie |
+| `tde-refresh-win9x-trinity` | [tde-refresh](https://github.com/Yjlion/tde-refresh) | Windows 9x look | trixie |
+| `tde-refresh-macclassic-trinity` | [tde-refresh](https://github.com/Yjlion/tde-refresh) | Mac OS Classic look | trixie |
+| `tde-refresh-macosx-trinity` | [tde-refresh](https://github.com/Yjlion/tde-refresh) | Mac OS X look | trixie |
+| `tde-youtube` | [tde-youtube](https://github.com/Yjlion/tde-youtube) | YouTube browser and player | trixie, bookworm |
 
 Renamed in November 2026: `tde-systemd` → `tde-systemd-trinity`, `tdeflatpak` → `tde-flatpak-trinity`, `tdepackagekit-trinity` → `tde-packagekit-trinity`. Installing the new package removes the old one.
 
 ## Use it
 
-You also need the official Trinity repository configured.
+You also need the official Trinity repository configured for the same Debian release.
+
+Add the signing key:
 
 ```bash
 sudo install -d -m 0755 /etc/apt/keyrings
 sudo curl -fsSL https://yjlion.github.io/tde-apt/tde-apt.asc -o /etc/apt/keyrings/yjlion-tde.asc
+```
+
+Then add the list for your Debian release and update.
+
+Debian 13 (trixie):
+
+```bash
 echo "deb [signed-by=/etc/apt/keyrings/yjlion-tde.asc] https://yjlion.github.io/tde-apt trixie main" \
   | sudo tee /etc/apt/sources.list.d/yjlion-tde.list
 sudo apt update
 ```
+
+Debian 12 (bookworm):
+
+```bash
+echo "deb [signed-by=/etc/apt/keyrings/yjlion-tde.asc] https://yjlion.github.io/tde-apt/bookworm bookworm main" \
+  | sudo tee /etc/apt/sources.list.d/yjlion-tde.list
+sudo apt update
+```
+
+Only packages whose source repo releases a bookworm build are in the bookworm suite (see the table above).
 
 ## How it works
 
 No packages are stored in this repository. The workflow in `.github/workflows/publish.yml`:
 
 1. downloads the `.deb` assets from the **latest GitHub release** of each source repo,
-2. builds the repository with `reprepro` (configuration in `conf/distributions`) and signs it,
-3. deploys the result to GitHub Pages.
+2. sorts them by Debian release: a file with `bookworm` in its name (`1.0~bookworm` version or `_bookworm.deb` suffix) goes to the `bookworm` suite, every other file to `trixie`,
+3. builds the repository with `reprepro` (configuration in `conf/distributions`) and signs it. Each suite has its own pool, so builds for both releases may share a version number: `trixie` is at the site root, `bookworm` under `/bookworm`,
+4. deploys the result to GitHub Pages.
 
 It runs daily, on pushes to `conf/`, `site/` or the workflow, on manual dispatch, and on a `new-deb` repository dispatch.
 The repository is rebuilt from scratch every time, so there is no state to lose. Only the newest release of each source repo is published.
@@ -69,5 +89,5 @@ Add to a source repo's release workflow, with a fine-grained token (`APT_DISPATC
 
 - `No section and no priority`: the `.deb` has no `Section`/`Priority` in `debian/control`; add them in the source repo.
 - `.deb` for another architecture: add it to `Architectures:` in `conf/distributions`.
-- Release with one `.deb` per Debian release (`*_trixie.deb`, `*_bookworm.deb`): the workflow drops `*_bookworm.deb` so only the trixie build is published.
+- Package missing from bookworm: the source repo must attach a separate bookworm build whose file name contains `bookworm`; unmarked files are published for trixie only.
 - Replacing a package with the same version but different contents is rejected by reprepro; bump the version.

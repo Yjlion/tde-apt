@@ -6,3 +6,12 @@ Architectures: amd64
 Components: main
 Description: Extra packages for the Trinity Desktop Environment on Debian 13
 SignWith: yes
+
+Origin: Yjlion TDE
+Label: yjlion-tde
+Codename: bookworm
+Suite: oldstable
+Architectures: amd64
+Components: main
+Description: Extra packages for the Trinity Desktop Environment on Debian 12
+SignWith: yes
