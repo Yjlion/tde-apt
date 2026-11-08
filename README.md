@@ -4,7 +4,7 @@ A signed apt repository for extra Trinity Desktop Environment packages on Debian
 
 ## Packages
 
-All packages follow the `tde-<name>-trinity` naming scheme.
+All packages follow the `tde-<name>-trinity` naming scheme, except `tde-youtube`, which keeps its upstream package name.
 
 | Package | Source | Description |
 |---|---|---|
@@ -16,6 +16,7 @@ All packages follow the `tde-<name>-trinity` naming scheme.
 | `tde-refresh-win9x-trinity` | [tde-refresh](https://github.com/Yjlion/tde-refresh) | Windows 9x look |
 | `tde-refresh-macclassic-trinity` | [tde-refresh](https://github.com/Yjlion/tde-refresh) | Mac OS Classic look |
 | `tde-refresh-macosx-trinity` | [tde-refresh](https://github.com/Yjlion/tde-refresh) | Mac OS X look |
+| `tde-youtube` | [tde-youtube](https://github.com/Yjlion/tde-youtube) | YouTube browser and player |
 
 Renamed in November 2026: `tde-systemd` → `tde-systemd-trinity`, `tdeflatpak` → `tde-flatpak-trinity`, `tdepackagekit-trinity` → `tde-packagekit-trinity`. Installing the new package removes the old one.
 
@@ -68,4 +69,5 @@ Add to a source repo's release workflow, with a fine-grained token (`APT_DISPATC
 
 - `No section and no priority`: the `.deb` has no `Section`/`Priority` in `debian/control`; add them in the source repo.
 - `.deb` for another architecture: add it to `Architectures:` in `conf/distributions`.
+- Release with one `.deb` per Debian release (`*_trixie.deb`, `*_bookworm.deb`): the workflow drops `*_bookworm.deb` so only the trixie build is published.
 - Replacing a package with the same version but different contents is rejected by reprepro; bump the version.
