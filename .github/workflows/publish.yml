@@ -20,7 +20,7 @@ concurrency:
 
 env:
   # Repos whose latest GitHub release carries the .deb files.
-  SOURCE_REPOS: "Yjlion/tde-systemd Yjlion/tde-flatpak Yjlion/tde-packagekit Yjlion/tde-firewalld Yjlion/tde-refresh Yjlion/tde-youtube"
+  SOURCE_REPOS: "Yjlion/tde-systemd Yjlion/tde-flatpak Yjlion/tde-packagekit Yjlion/tde-firewalld Yjlion/tde-refresh Yjlion/tde-youtube Yjlion/tde-ai-client"
 
 jobs:
   publish:
@@ -59,6 +59,8 @@ jobs:
             gh release download --repo "$repo" --pattern '*.deb' --dir debs --clobber \
               || echo "::warning::No release with .deb assets in $repo (skipped)"
           done
+          # Debug-symbol packages (*-dbgsym_*.deb) are not published.
+          rm -f debs/*-dbgsym_*.deb
           # Sort the files by Debian release. A build for bookworm is marked in its
           # file name (version "~bookworm" or suffix "_bookworm.deb"); every other
           # file, marked "trixie" or not marked at all, is a trixie build.

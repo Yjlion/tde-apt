@@ -4,7 +4,7 @@ A signed apt repository for extra Trinity Desktop Environment packages on Debian
 
 ## Packages
 
-All packages follow the `tde-<name>-trinity` naming scheme, except `tde-youtube`, which keeps its upstream package name.
+All packages follow the `tde-<name>-trinity` naming scheme, except `tde-youtube` and `tde-ai-client`, which keep their upstream package names.
 
 | Package | Source | Description | Debian |
 |---|---|---|---|
@@ -18,6 +18,7 @@ All packages follow the `tde-<name>-trinity` naming scheme, except `tde-youtube`
 | `tde-refresh-macclassic-trinity` | [tde-refresh](https://github.com/Yjlion/tde-refresh) | Mac OS Classic look | trixie |
 | `tde-refresh-macosx-trinity` | [tde-refresh](https://github.com/Yjlion/tde-refresh) | Mac OS X look | trixie |
 | `tde-youtube` | [tde-youtube](https://github.com/Yjlion/tde-youtube) | YouTube browser and player | trixie, bookworm |
+| `tde-ai-client` | [tde-ai-client](https://github.com/Yjlion/tde-ai-client) | AI chat client (AI Horde, KoboldCpp, OpenAI-compatible) | trixie, bookworm |
 
 Renamed in November 2026: `tde-systemd` → `tde-systemd-trinity`, `tdeflatpak` → `tde-flatpak-trinity`, `tdepackagekit-trinity` → `tde-packagekit-trinity`. Installing the new package removes the old one.
 
