@@ -20,6 +20,8 @@ All packages follow the `tde-<name>-trinity` naming scheme, except `tde-youtube`
 | `tde-youtube` | [tde-youtube](https://github.com/Yjlion/tde-youtube) | YouTube browser and player | trixie, bookworm |
 | `tde-ai-client` | [tde-ai-client](https://github.com/Yjlion/tde-ai-client) | AI chat client (AI Horde, KoboldCpp, OpenAI-compatible) | trixie, bookworm |
 | `tde-mixer-trinity` | [tde-mixer](https://github.com/Yjlion/tde-mixer) | Per-application volume mixer for PipeWire and PulseAudio (KMix replacement, Sound & Multimedia → Volume Mixer) | trixie, bookworm |
+| `tde-nmctl-trinity` | [tde-nmctl](https://github.com/Yjlion/tde-nmctl) | NetworkManager tray applet and connection editor (Internet & Network → Network Connections), passwords in TDE Wallet | trixie, bookworm |
+| `tde-tmatrix-trinity` | [tde-tmatrix](https://github.com/Yjlion/tde-tmatrix) | Matrix chat client with end-to-end encryption | trixie, bookworm |
 
 Renamed in November 2026: `tde-systemd` → `tde-systemd-trinity`, `tdeflatpak` → `tde-flatpak-trinity`, `tdepackagekit-trinity` → `tde-packagekit-trinity`. Installing the new package removes the old one.
 
