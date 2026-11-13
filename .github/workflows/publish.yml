@@ -20,7 +20,7 @@ concurrency:
 
 env:
   # Repos whose latest GitHub release carries the .deb files.
-  SOURCE_REPOS: "Yjlion/tde-systemd Yjlion/tde-flatpak Yjlion/tde-packagekit Yjlion/tde-firewalld Yjlion/tde-refresh Yjlion/tde-youtube Yjlion/tde-ai-client Yjlion/tde-mixer"
+  SOURCE_REPOS: "Yjlion/tde-systemd Yjlion/tde-flatpak Yjlion/tde-packagekit Yjlion/tde-firewalld Yjlion/tde-refresh Yjlion/tde-youtube Yjlion/tde-ai-client Yjlion/tde-mixer Yjlion/tde-nmctl Yjlion/tde-tmatrix"
 
 jobs:
   publish:
